@@ -73,3 +73,7 @@ if (emailLink && CONTACT_EMAIL.trim()) {
 }
 
 document.getElementById("year").textContent = new Date().getFullYear();
+
+// Enable scroll-reveal styling only after this script has initialized successfully.
+// If JavaScript is unavailable or fails to load, all page content stays visible.
+document.documentElement.classList.add("js-enabled");
