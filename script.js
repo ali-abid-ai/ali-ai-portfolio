@@ -13,12 +13,23 @@ menuToggle?.addEventListener("click", () => {
   menuToggle.setAttribute("aria-expanded", String(isOpen));
   menuToggle.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
 });
+
 navLinks?.querySelectorAll("a").forEach((link) => {
   link.addEventListener("click", () => {
     navLinks.classList.remove("open");
-    menuToggle.setAttribute("aria-expanded", "false");
-    menuToggle.setAttribute("aria-label", "Open navigation");
+    menuToggle?.setAttribute("aria-expanded", "false");
+    menuToggle?.setAttribute("aria-label", "Open navigation");
   });
+});
+
+// Allow keyboard users to close the mobile menu and return focus to its toggle.
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && navLinks?.classList.contains("open")) {
+    navLinks.classList.remove("open");
+    menuToggle?.setAttribute("aria-expanded", "false");
+    menuToggle?.setAttribute("aria-label", "Open navigation");
+    menuToggle?.focus();
+  }
 });
 
 // Theme preference
@@ -27,8 +38,20 @@ try {
 } catch {
   // The site still works if browser storage is unavailable.
 }
+
+function updateThemeControl() {
+  const isLight = body.classList.contains("light");
+  themeToggle?.setAttribute(
+    "aria-label",
+    isLight ? "Switch to dark theme" : "Switch to light theme"
+  );
+}
+
+updateThemeControl();
+
 themeToggle?.addEventListener("click", () => {
   body.classList.toggle("light");
+  updateThemeControl();
   try {
     localStorage.setItem("portfolio-theme", body.classList.contains("light") ? "light" : "dark");
   } catch {
